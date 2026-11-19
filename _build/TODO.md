@@ -16,7 +16,7 @@ Search the HTML for `TODO` to find each spot. Rebuild with `python3 _build/build
 
 ## Content from the client
 7. **Their van**: confirm how it's used (appointments, community activities, outings) and send a real photo. The current van photo is a licence-free stand-in.
-8. **Adobe Stock images**: their current site shows five watermarked Adobe Stock previews (#1057606701, #1238389313, #1246633814, #1499957809, #1548763731). These previews aren't licensed, so the site uses close licence-free matches instead (van, greeting, paper-chain, nurse, park). To use the originals, the client must license them on stock.adobe.com.
+8. **Adobe Stock images (client is licensing them)**: #1057606701, #1238389313, #1246633814, #1499957809, #1548763731. When the licensed downloads arrive, save them in `_build/adobe/` named `<ID>.jpg`, run `python3 _build/swap_adobe.py` then `python3 _build/build.py`, and push. See `_build/adobe/README.md`. Until then the site shows licence-free stand-ins.
 9. **Photos**: every other image is either from their current site (Pexels) or Pexels. Replace with real photos, with consent.
 10. **Feedback**: home page "In their own words" placeholder. Real quotes only, with written permission. (The "Oliver Hartman" quote on their current site is Webador template text.)
 11. **Team**: About page placeholder (names, roles, photos, with permission).

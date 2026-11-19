@@ -129,6 +129,18 @@ IMAGES = {
 CLIENT_IMAGES = {"team", "home-care", "assess", "community", "friends-studio", "planning", "cafe", "drawing"}
 STANDINS = {"van": "1057606701", "greeting": "1238389313", "paper-chain": "1246633814", "nurse": "1499957809", "park": "1548763731"}
 
+# Once the client licenses an Adobe Stock image, _build/swap_adobe.py records it in
+# _build/adobe/licensed.json and the page switches to this alt text for it.
+ADOBE_ALT = {
+    "van": "A silver wheelchair-accessible minivan with its side ramp lowered and a wheelchair beside it",
+    "greeting": "A woman greets a smiling man in a wheelchair in a bright living room",
+    "paper-chain": "Cupped hands holding a chain of paper people against a warm sunset",
+    "nurse": "A man in a white coat walks beside a smiling woman in a wheelchair outdoors",
+    "park": "A carer leans in to chat with a smiling woman in a wheelchair in a sunny park",
+}
+_REC = pathlib.Path(__file__).resolve().parent / "adobe" / "licensed.json"
+LICENSED = json.loads(_REC.read_text()) if _REC.exists() else {}
+
 
 def img(name, alt, sizes, eager=False):
     widths, (rw, rh) = IMAGES[name]
@@ -136,7 +148,10 @@ def img(name, alt, sizes, eager=False):
     w = widths[-1]
     h = round(w * rh / rw)
     load = 'fetchpriority="high"' if eager else 'loading="lazy"'
-    if name in STANDINS:
+    if name in LICENSED:
+        alt = ADOBE_ALT[name]
+        note = f"<!-- Licensed Adobe Stock #{LICENSED[name]} (licence held by the client). -->"
+    elif name in STANDINS:
         note = (f"<!-- TODO: licence-free stand-in for the watermarked Adobe Stock #{STANDINS[name]} on the client's current site. "
                 f"Replace with the client's own photo, or license that Adobe Stock image. -->")
     elif name in CLIENT_IMAGES:

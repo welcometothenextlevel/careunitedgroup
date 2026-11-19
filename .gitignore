@@ -1,0 +1,5 @@
+# Licensed Adobe Stock originals go here, never committed.
+_build/adobe/*
+!_build/adobe/licensed.json
+!_build/adobe/README.md
+.DS_Store

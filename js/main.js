@@ -59,7 +59,7 @@
   /* ---------- Gentle reveal on scroll ----------
      Content is visible without JS; the "js" class on <html> sets the start state.
      Opacity/transform only (no clip-path), and a failsafe shows everything. */
-  var reveals = document.querySelectorAll(".reveal, .reveal-img");
+  var reveals = document.querySelectorAll(".reveal, .veil");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function showAll() { reveals.forEach(function (el) { el.classList.add("is-in"); }); }
   if (!("IntersectionObserver" in window) || reduce) {
@@ -69,15 +69,67 @@
       entries.forEach(function (entry) {
         if (entry.isIntersecting) { entry.target.classList.add("is-in"); io.unobserve(entry.target); }
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px", threshold: 0 });
     reveals.forEach(function (el) { io.observe(el); });
     /* Hidden tabs and print never fire the observer: show everything */
     setTimeout(function () { if (document.visibilityState === "hidden") showAll(); }, 1500);
     window.addEventListener("beforeprint", showAll);
   }
 
+  /* ---------- Services showcase: tabs on wide screens, stacked cards on small ones ---------- */
+  document.querySelectorAll("[data-tabs]").forEach(function (root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll("[data-tab]"));
+    var panels = Array.prototype.slice.call(root.querySelectorAll("[data-panel]"));
+    var list = root.querySelector(".svc-tablist");
+    var wide = window.matchMedia("(min-width: 900px)");
+    var current = 0;
+
+    function select(i, focus) {
+      current = i;
+      tabs.forEach(function (t, n) {
+        var on = n === i;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        panels[n].classList.toggle("is-active", on);
+      });
+      if (focus) tabs[i].focus();
+    }
+    function setMode() {
+      if (wide.matches) {
+        list.setAttribute("role", "tablist");
+        tabs.forEach(function (t, n) {
+          t.setAttribute("role", "tab");
+          t.setAttribute("aria-controls", panels[n].id);
+          panels[n].setAttribute("role", "tabpanel");
+          panels[n].setAttribute("aria-labelledby", t.id);
+          panels[n].tabIndex = 0;
+        });
+        select(current, false);
+      } else {
+        list.removeAttribute("role");
+        tabs.forEach(function (t, n) {
+          ["role", "aria-controls", "aria-selected"].forEach(function (a) { t.removeAttribute(a); });
+          ["role", "aria-labelledby", "tabindex"].forEach(function (a) { panels[n].removeAttribute(a); });
+        });
+      }
+    }
+    tabs.forEach(function (t, n) {
+      t.addEventListener("click", function () { select(n, false); });
+      t.addEventListener("keydown", function (e) {
+        var k = e.key, next = null;
+        if (k === "ArrowDown" || k === "ArrowRight") next = (n + 1) % tabs.length;
+        if (k === "ArrowUp" || k === "ArrowLeft") next = (n - 1 + tabs.length) % tabs.length;
+        if (k === "Home") next = 0;
+        if (k === "End") next = tabs.length - 1;
+        if (next !== null) { e.preventDefault(); select(next, true); }
+      });
+    });
+    wide.addEventListener("change", setMode);
+    setMode();
+  });
+
   /* ---------- Quote forms ---------- */
-  var SERVICE_PARAM = { health: "Health assistance", home: "Home care", daily: "Support with daily personal activities", community: "Community participation" };
+  var SERVICE_PARAM = { health: "Health assistance", home: "Home care", daily: "Support with daily personal activities", community: "Community participation", transport: "Transport in our wheelchair-accessible van" };
 
   document.querySelectorAll("form[data-quote-form]").forEach(function (form) {
     var summary = form.querySelector(".form-summary");

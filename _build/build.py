@@ -121,7 +121,7 @@ IMAGES = {
     "nurse": ([700, 1200], (4, 3)), "park": ([700, 1200], (4, 3)),
     "hero": ([640, 1100], (4, 5)), "health": ([700, 1200], (4, 3)), "daily-living": ([700, 1200], (4, 3)),
     "friends": ([600, 1000], (4, 5)), "bench": ([600, 1000], (4, 5)), "dandelion": ([700, 1200], (3, 2)),
-    "boardwalk": ([600, 1000], (4, 5)), "kitchen": ([1000, 1800], (21, 9)),
+    "boardwalk": ([600, 1000], (4, 5)), "home-visit": ([600, 1000], (4, 5)), "kitchen": ([1000, 1800], (21, 9)),
 }
 
 # Images reused from the client's current website, and licence-free stand-ins for the
@@ -1037,7 +1037,7 @@ def page_contact():
             {or_call()}
           </div>
         </div>
-        <div class="ph-media hero-in d2"><div class="frame">{img("boardwalk", "A young man in a wheelchair laughs with a friend standing behind him on a sunny boardwalk", "(min-width: 900px) 40vw, 92vw", eager=True)}</div></div>
+        <div class="ph-media hero-in d2"><div class="frame">{img("home-visit", "A smiling support worker in a yellow uniform and ID lanyard checks in with a client during a home visit", "(min-width: 900px) 40vw, 92vw", eager=True)}</div></div>
       </div>
     </section>
 

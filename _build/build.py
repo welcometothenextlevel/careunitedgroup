@@ -28,12 +28,12 @@ STREET = "126 Cardigan St"
 SUBURB = "Auburn"
 STATE = "NSW"
 POSTCODE = "2144"
-PHONE1 = "0405 785 338"
-PHONE1_TEL = "+61405785338"
-PHONE2 = "0404 726 260"
-PHONE2_TEL = "+61404726260"
+PHONE1 = "0440 127 111"
+PHONE1_TEL = "+61440127111"
+PHONE2 = "0411 394 111"
+PHONE2_TEL = "+61411394111"
 EMAIL = "cug.ndis@gmail.com"
-WA_URL = "https://wa.me/61405785338?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20your%20NDIS%20support%20services"
+WA_URL = "https://wa.me/61440127111?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20your%20NDIS%20support%20services"
 NDIS_REG_URL = "https://www.ndiscommission.gov.au/provider-registration/care-united-group-pty-ltd"
 MAP_EMBED = "https://www.google.com/maps?q=126+Cardigan+St,+Auburn+NSW+2144&output=embed"
 MAP_LINK = "https://www.google.com/maps/search/?api=1&query=126+Cardigan+St+Auburn+NSW+2144"
@@ -206,7 +206,7 @@ def head(title, desc, extra=""):
   <!-- TODO: this is a preview/pitch copy. Remove the noindex line below (and the Disallow in robots.txt) when the site moves to the client's own domain. -->
   <meta name="robots" content="noindex, nofollow">
   <!-- TODO: add <link rel="canonical"> and og:url with the final absolute URL once the domain is confirmed. -->
-  <meta name="theme-color" content="#4a2c88">
+  <meta name="theme-color" content="#5a17a8">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{LEGAL}">
   <meta property="og:locale" content="en_AU">
@@ -219,8 +219,8 @@ def head(title, desc, extra=""):
   <meta property="og:image:alt" content="A support worker pouring a drink for a young man in a wheelchair at a kitchen table">
   <meta name="twitter:card" content="summary_large_image">
   <!-- Favicon made from the client's existing logo mark (original colours). -->
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -255,7 +255,7 @@ def header(current):
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="index.html" aria-label="{LEGAL}, home">
-        <img src="images/logo-mark.svg" alt="" width="52" height="58">
+        <img src="images/logo-badge-160.webp" alt="" width="60" height="60">
         {WORDMARK}
       </a>
       <nav class="site-nav" id="site-nav" aria-label="Main">
@@ -310,7 +310,7 @@ def footer():
     <div class="wrap">
       <div class="footer-grid">
         <div>
-          <a class="footer-brand" href="index.html" aria-label="{LEGAL}, home"><span class="disc"><img src="images/logo-mark.svg" alt="" width="38" height="42"></span>{WORDMARK}</a>
+          <a class="footer-brand" href="index.html" aria-label="{LEGAL}, home"><span class="disc"><img src="images/logo-badge-160.webp" alt="" width="68" height="68" loading="lazy"></span>{WORDMARK}</a>
           <p>Disability support at home and in the community, across Sydney.</p>
           <p class="footer-reg">{icon("shield")}<a href="{NDIS_REG_URL}" target="_blank" rel="noopener">Registered NDIS provider{NEWTAB}</a></p>
           <p>{LEGAL}<br>ABN {ABN}</p>
@@ -322,7 +322,7 @@ def footer():
           <ul>
             <li><a href="tel:{PHONE1_TEL}">{PHONE1}</a></li>
             <li><a href="tel:{PHONE2_TEL}">{PHONE2}</a></li>
-            <li><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp +61 405 785 338{NEWTAB}</a></li>
+            <li><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp {PHONE1}{NEWTAB}</a></li>
             <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           </ul>
           <h2 style="margin-top:28px">Opening hours</h2>
@@ -1078,7 +1078,7 @@ def page_contact():
   </main>
 """
     return (head("Request a Quote | NDIS Home Care Auburn & Sydney | Care United Group",
-                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0405 785 338, message us on WhatsApp or send a quote request online.")
+                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0440 127 111, message us on WhatsApp or send a quote request online.")
             + header("contact.html") + body + footer())
 
 

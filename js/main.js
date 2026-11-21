@@ -173,7 +173,7 @@
       else if (name.length < 2) errors.push(["name", "Please enter your full name."]);
 
       if (!phone) errors.push(["phone", "Please add a phone number so we can call you back."]);
-      else if (digits.length < 8 || digits.length > 12) errors.push(["phone", "That phone number looks too short or too long. Please check it, for example 0405 785 338."]);
+      else if (digits.length < 8 || digits.length > 12) errors.push(["phone", "That phone number looks too short or too long. Please check it, for example 0412 345 678."]);
 
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.push(["email", "That email address doesn't look quite right. Please check it, or leave it blank."]);
 

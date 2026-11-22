@@ -3,7 +3,7 @@
 
 1. Put each licensed file (the full download after purchase, NOT the watermarked
    preview) in _build/adobe/, named by its Adobe Stock ID, e.g.
-       _build/adobe/1057606701.jpg
+       _build/adobe/1238389313.jpg
    (.jpg, .jpeg, .png or .webp all work; you can swap one or all five).
 2. Run:  python3 _build/swap_adobe.py
    It writes the site's WebP sizes over the stand-in images and records the swap in
@@ -27,7 +27,7 @@ ADOBE_DIR = HERE / "adobe"
 RECORD = ADOBE_DIR / "licensed.json"
 
 # Where to centre the crop on each original (x, y as 0..1).
-FOCUS = {"van": (.45, .55), "greeting": (.6, .55), "paper-chain": (.5, .5), "nurse": (.55, .5), "park": (.6, .55)}
+FOCUS = {"greeting": (.6, .55), "paper-chain": (.5, .5), "nurse": (.55, .5), "park": (.6, .55)}
 
 
 def crop(im, ar, fx, fy):

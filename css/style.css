@@ -414,6 +414,12 @@ a:hover { color: var(--pink-text); }
 }
 .van-badge .b-ico { width: 46px; height: 46px; border-radius: 50%; background: #eef5ea; color: var(--leaf-text); display: grid; place-items: center; flex-shrink: 0; }
 .van-badge svg { width: 24px; height: 24px; }
+/* the client's own van photos: small originals, so shown as a row of three */
+.van-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.van-photos figure { margin: 0; border-radius: var(--r); overflow: hidden; background: var(--white); box-shadow: var(--shadow); }
+.van-media .van-photos img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.van-photos figcaption { padding: 9px 10px 10px; font-size: 1rem; font-weight: 600; line-height: 1.25; color: var(--plum-900); }
+.van-media .van-badge { position: static; margin-top: 22px; max-width: none; box-shadow: none; border: 1px solid var(--line); }
 .van-list { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
 .van-list li { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--line); }
 .van-list svg { width: 24px; height: 24px; color: var(--pink-text); margin-top: 3px; }
@@ -803,7 +809,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px
 .js .reveal-d2 { transition-delay: .16s; }
 .js .reveal-d3 { transition-delay: .24s; }
 /* image reveal: a veil slides away; the image itself is never clipped */
-.frame, .hero-main, .gallery li { position: relative; }
+.frame, .hero-main, .gallery li, .van-photos figure { position: relative; }
 .js .veil::after {
   content: ""; position: absolute; inset: 0; z-index: 2; background: var(--veil, var(--ivory));
   transform-origin: right; transition: transform 1.1s var(--ease); pointer-events: none;
@@ -838,3 +844,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px
   .js .reveal { opacity: 1; transform: none; }
   .js .veil::after { display: none; }
 }
+
+/* contact hero: the client's NDIS cut-out image, shown whole */
+.page-hero .ph-media--cutout { justify-self: center; width: 100%; max-width: 540px; }
+.page-hero .ph-media--cutout img { width: 100%; aspect-ratio: 1; object-fit: contain; }

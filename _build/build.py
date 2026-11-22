@@ -24,7 +24,6 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 BUSINESS = "Care United Group"
 LEGAL = "Care United Group Pty Ltd"
 ABN = "44 650 599 787"
-STREET = "126 Cardigan St"
 SUBURB = "Auburn"
 STATE = "NSW"
 POSTCODE = "2144"
@@ -35,8 +34,6 @@ PHONE2_TEL = "+61411394111"
 EMAIL = "cug.ndis@gmail.com"
 WA_URL = "https://wa.me/61440127111?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20your%20NDIS%20support%20services"
 NDIS_REG_URL = "https://www.ndiscommission.gov.au/provider-registration/care-united-group-pty-ltd"
-MAP_EMBED = "https://www.google.com/maps?q=126+Cardigan+St,+Auburn+NSW+2144&output=embed"
-MAP_LINK = "https://www.google.com/maps/search/?api=1&query=126+Cardigan+St+Auburn+NSW+2144"
 FORM_ACTION = "https://formspree.io/f/YOUR_FORM_ID"
 
 # key, anchor, name, icon, image, image alt, short copy
@@ -117,22 +114,24 @@ IMAGES = {
     "team": ([800, 1400], (3, 2)), "home-care": ([700, 1200], (4, 3)), "assess": ([700, 1200], (5, 4)),
     "community": ([700, 1200], (4, 3)), "friends-studio": ([600, 1000], (4, 5)), "planning": ([600, 1000], (4, 5)),
     "cafe": ([532], (1, 1)), "drawing": ([326], (4, 3)),
-    "van": ([800, 1600], (3, 2)), "greeting": ([700, 1200], (3, 2)), "paper-chain": ([700, 1200], (3, 2)),
+    "van-exterior": ([260], (1, 1)), "van-side": ([260], (1, 1)), "van-lift": ([260], (1, 1)),
+    "ndis-people": ([600, 920], (1, 1)), "greeting": ([700, 1200], (3, 2)), "paper-chain": ([700, 1200], (3, 2)),
     "nurse": ([700, 1200], (4, 3)), "park": ([700, 1200], (4, 3)),
     "hero": ([640, 1100], (4, 5)), "health": ([700, 1200], (4, 3)), "daily-living": ([700, 1200], (4, 3)),
     "friends": ([600, 1000], (4, 5)), "bench": ([600, 1000], (4, 5)), "dandelion": ([700, 1200], (3, 2)),
-    "boardwalk": ([600, 1000], (4, 5)), "home-visit": ([600, 1000], (4, 5)), "kitchen": ([1000, 1800], (21, 9)),
+    "boardwalk": ([600, 1000], (4, 5)), "kitchen": ([1000, 1800], (21, 9)),
 }
 
 # Images reused from the client's current website, and licence-free stand-ins for the
 # five watermarked Adobe Stock previews on that site.
+# Photos the client sent us directly (22 Nov 2026, via Messenger).
+CLIENT_OWN = {"van-exterior", "van-side", "van-lift", "ndis-people"}
 CLIENT_IMAGES = {"team", "home-care", "assess", "community", "friends-studio", "planning", "cafe", "drawing"}
-STANDINS = {"van": "1057606701", "greeting": "1238389313", "paper-chain": "1246633814", "nurse": "1499957809", "park": "1548763731"}
+STANDINS = {"greeting": "1238389313", "paper-chain": "1246633814", "nurse": "1499957809", "park": "1548763731"}
 
 # Once the client licenses an Adobe Stock image, _build/swap_adobe.py records it in
 # _build/adobe/licensed.json and the page switches to this alt text for it.
 ADOBE_ALT = {
-    "van": "A silver wheelchair-accessible minivan with its side ramp lowered and a wheelchair beside it",
     "greeting": "A woman greets a smiling man in a wheelchair in a bright living room",
     "paper-chain": "Cupped hands holding a chain of paper people against a warm sunset",
     "nurse": "A man in a white coat walks beside a smiling woman in a wheelchair outdoors",
@@ -151,6 +150,11 @@ def img(name, alt, sizes, eager=False):
     if name in LICENSED:
         alt = ADOBE_ALT[name]
         note = f"<!-- Licensed Adobe Stock #{LICENSED[name]} (licence held by the client). -->"
+    elif name == "ndis-people":
+        note = ("<!-- Image supplied by the client. TODO: it shows the NDIA's NDIS logo; check the NDIA brand rules allow a provider to use it, "
+                "or swap for the NDIS Commission's registered-provider logo. -->")
+    elif name in CLIENT_OWN:
+        note = "<!-- The client's own van photo (sent 22 Nov 2026 as a small Messenger image). TODO: ask for the full-size original. -->"
     elif name in STANDINS:
         note = (f"<!-- TODO: licence-free stand-in for the watermarked Adobe Stock #{STANDINS[name]} on the client's current site. "
                 f"Replace with the client's own photo, or license that Adobe Stock image. -->")
@@ -173,8 +177,8 @@ def schema():
         "taxID": f"ABN {ABN}",
         "telephone": PHONE1_TEL,
         "email": EMAIL,
-        "address": {"@type": "PostalAddress", "streetAddress": STREET, "addressLocality": SUBURB,
-                    "addressRegion": STATE, "postalCode": POSTCODE, "addressCountry": "AU"},
+        "address": {"@type": "PostalAddress", "addressLocality": SUBURB,
+                    "addressRegion": STATE, "addressCountry": "AU"},
         "areaServed": {"@type": "City", "name": "Sydney"},
         "contactPoint": [
             {"@type": "ContactPoint", "telephone": PHONE1_TEL, "contactType": "customer service", "areaServed": "AU", "availableLanguage": "English"},
@@ -246,7 +250,7 @@ def header(current):
   <div class="utility on-dark">
     <div class="wrap">
       <a class="reg" href="{NDIS_REG_URL}" target="_blank" rel="noopener">{icon("shield")}Registered NDIS provider{NEWTAB}</a>
-      <span>{STREET}, {SUBURB}</span>
+      <span>Based in {SUBURB}, Sydney</span>
       <span>Mon to Fri 9am to 7pm, Sat 9am to 5pm</span>
       <a class="spacer" href="tel:{PHONE2_TEL}">{icon("phone")}{PHONE2}</a>
       <a href="{WA_URL}" target="_blank" rel="noopener">{icon("check-circle")}WhatsApp{NEWTAB}</a>
@@ -314,7 +318,7 @@ def footer():
           <p>Disability support at home and in the community, across Sydney.</p>
           <p class="footer-reg">{icon("shield")}<a href="{NDIS_REG_URL}" target="_blank" rel="noopener">Registered NDIS provider{NEWTAB}</a></p>
           <p>{LEGAL}<br>ABN {ABN}</p>
-          <address>{STREET}, {SUBURB} {STATE} {POSTCODE}</address>
+          <p>Based in {SUBURB}, supporting people across Sydney</p>
           <div class="footer-cta"><a class="btn btn--light" href="contact.html#quote-form">Request a quote</a></div>
         </div>
         <div>
@@ -572,7 +576,7 @@ def page_home():
         <div class="hero-visual">
           <div class="hero-main veil">{img("hero", "A support worker pours a glass of juice for a young man in a wheelchair at a kitchen table", "(min-width: 900px) 40vw, 80vw", eager=True)}</div>
           <figure class="hero-inset float">
-            {img("van", "A wheelchair-accessible minivan with its side door open and a transfer seat lowered", "(min-width: 900px) 22vw, 50vw", eager=True)}
+            {img("van-exterior", "The back of our white Toyota HiAce Commuter van, with a wheelchair access sign on the rear window", "(min-width: 900px) 22vw, 50vw", eager=True)}
             <figcaption>{icon("wheelchair")}Our wheelchair-accessible van</figcaption>
           </figure>
           <p class="hero-tag"><strong>13 supports</strong>approved on the NDIS Commission register</p>
@@ -614,13 +618,17 @@ def page_home():
     <section class="section" aria-labelledby="van-title">
       <div class="wrap van">
         <div class="van-media">
-          <div class="frame veil">{img("van", "A modern wheelchair-accessible minivan with its sliding door open and a transfer seat lowered to the ground", "(min-width: 900px) 52vw, 92vw")}</div>
+          <div class="van-photos">
+            <figure class="veil">{img("van-exterior", "The back of our white Toyota HiAce Commuter van, with a wheelchair access sign on the rear window", "(min-width: 900px) 17vw, 30vw")}<figcaption>Our van</figcaption></figure>
+            <figure class="veil">{img("van-side", "Inside our van through the side door: grab rails, a non-slip step and rows of seats", "(min-width: 900px) 17vw, 30vw")}<figcaption>Side entry</figcaption></figure>
+            <figure class="veil">{img("van-lift", "The rear doors of our van open to show the wheelchair lift", "(min-width: 900px) 17vw, 30vw")}<figcaption>Wheelchair lift</figcaption></figure>
+          </div>
           <p class="van-badge"><span class="b-ico">{icon("check-circle")}</span>Travel and transport is one of our approved NDIS supports</p>
         </div>
         <div class="reveal">
           <h2 id="van-title">Our own wheelchair-accessible van</h2>
           <p class="lead">Getting there is part of the support. Our wheelchair-accessible van makes it easier to reach the places that matter to you.</p>
-          <!-- TODO: confirm with the client how the van is used (and replace the stand-in photo with their actual van). -->
+          <!-- TODO: confirm with the client how the van is used. -->
           <ul class="van-list">
             <li>{icon("calendar")}<span><strong>Appointments</strong><span class="sub">Help getting to and from your appointments.</span></span></li>
             <li>{icon("people")}<span><strong>Community events and activities</strong><span class="sub">Join in without worrying about how you'll get there.</span></span></li>
@@ -731,10 +739,10 @@ def page_home():
         </div>
         <div class="reveal">
           <h2 id="area-title">Based in Auburn, supporting people across Sydney</h2>
-          <p>Our office is at {STREET}, {SUBURB}. We support participants across Sydney, at home and out in the community. Not sure if we cover your suburb? Just ask.</p>
+          <p>We're based in {SUBURB} and support participants across Sydney, at home and out in the community. Not sure if we cover your suburb? Just ask.</p>
           <!-- TODO: list the suburbs or regions the client confirms they cover. Do not add areas until confirmed. -->
           <dl class="details">
-            <div><dt>{icon("pin")}Address</dt><dd><a href="{MAP_LINK}" target="_blank" rel="noopener">{STREET}, {SUBURB} {STATE} {POSTCODE}<span class="visually-hidden"> (opens Google Maps in a new tab)</span></a></dd></div>
+            <div><dt>{icon("pin")}Based in</dt><dd>{SUBURB}, Sydney {STATE}</dd></div>
             <div><dt>{icon("clock")}Opening hours</dt><dd>{hours_list()}</dd></div>
             <div><dt>{icon("phone")}Phone</dt><dd><a href="tel:{PHONE1_TEL}">{PHONE1}</a> or <a href="tel:{PHONE2_TEL}">{PHONE2}</a></dd></div>
           </dl>
@@ -848,14 +856,18 @@ def page_services():
     <section class="section section--lilac" id="transport" aria-labelledby="transport-title">
       <div class="wrap van">
         <div class="van-media">
-          <div class="frame veil">{img("van", "A modern wheelchair-accessible minivan with its sliding door open and a transfer seat lowered to the ground", "(min-width: 900px) 52vw, 92vw")}</div>
+          <div class="van-photos">
+            <figure class="veil">{img("van-exterior", "The back of our white Toyota HiAce Commuter van, with a wheelchair access sign on the rear window", "(min-width: 900px) 17vw, 30vw")}<figcaption>Our van</figcaption></figure>
+            <figure class="veil">{img("van-side", "Inside our van through the side door: grab rails, a non-slip step and rows of seats", "(min-width: 900px) 17vw, 30vw")}<figcaption>Side entry</figcaption></figure>
+            <figure class="veil">{img("van-lift", "The rear doors of our van open to show the wheelchair lift", "(min-width: 900px) 17vw, 30vw")}<figcaption>Wheelchair lift</figcaption></figure>
+          </div>
           <p class="van-badge"><span class="b-ico">{icon("check-circle")}</span>Assistance with travel and transport arrangements: NDIS approved</p>
         </div>
         <div class="reveal">
           <div class="s-ico" style="width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:var(--plum);color:#fff;margin-bottom:22px">{icon("van")}</div>
           <h2 id="transport-title">Wheelchair-accessible transport</h2>
           <p class="lead">We have our own wheelchair-accessible van, so getting to appointments, outings and community activities is simpler and safer.</p>
-          <!-- TODO: confirm with the client how the van is used (and replace the stand-in photo with their actual van). -->
+          <!-- TODO: confirm with the client how the van is used. -->
           <ul class="ticks">
             <li>{icon("check")}<span>Help getting to and from appointments</span></li>
             <li>{icon("check")}<span>Getting to community events, groups and activities</span></li>
@@ -985,7 +997,7 @@ def page_about():
             <!-- TODO: the public register shows no registration number. Add it here if the client wants it shown. -->
             <div><dt>Registration groups</dt><dd><a href="services.html#supports">13 approved registration groups</a></dd></div>
             <div><dt>ABN</dt><dd>{ABN} (active since May 2021)</dd></div>
-            <div><dt>Head office</dt><dd>{STREET}, {SUBURB} {STATE} {POSTCODE}</dd></div>
+            <div><dt>Based in</dt><dd>{SUBURB}, {STATE}</dd></div>
             <div><dt>Service area</dt><dd>Sydney</dd></div>
             <div><dt>Transport</dt><dd>Our own wheelchair-accessible van</dd></div>
             <div><dt>Phone</dt><dd><a href="tel:{PHONE1_TEL}">{PHONE1}</a> or <a href="tel:{PHONE2_TEL}">{PHONE2}</a></dd></div>
@@ -1037,7 +1049,7 @@ def page_contact():
             {or_call()}
           </div>
         </div>
-        <div class="ph-media hero-in d2"><div class="frame">{img("home-visit", "A smiling support worker in a yellow uniform and ID lanyard checks in with a client during a home visit", "(min-width: 900px) 40vw, 92vw", eager=True)}</div></div>
+        <div class="ph-media ph-media--cutout hero-in d2">{img("ndis-people", "Four smiling NDIS participants, two using wheelchairs and one with a white cane, in front of a large NDIS logo", "(min-width: 900px) 40vw, 92vw", eager=True)}</div>
       </div>
     </section>
 
@@ -1048,7 +1060,7 @@ def page_contact():
           <p>Prefer to speak to someone? Call or message us during opening hours.</p>
           {contact_options()}
           <dl class="details" style="margin-top:28px">
-            <div><dt>{icon("pin")}Head office</dt><dd>{STREET}, {SUBURB} {STATE} {POSTCODE}</dd></div>
+            <div><dt>{icon("pin")}Based in</dt><dd>{SUBURB}, Sydney {STATE}</dd></div>
             <div><dt>{icon("clock")}Opening hours</dt><dd>{hours_list()}</dd></div>
             <div><dt>{icon("shield")}NDIS registration</dt><dd><a href="{NDIS_REG_URL}" target="_blank" rel="noopener">Approved, view on the register{NEWTAB}</a></dd></div>
           </dl>
@@ -1059,19 +1071,22 @@ def page_contact():
       </div>
     </section>
 
-    <section class="section" aria-labelledby="map-title">
-      <div class="wrap split">
+    <section class="section" aria-labelledby="area-title">
+      <div class="wrap van">
+        <div class="van-media">
+          <div class="van-photos">
+            <figure class="veil">{img("van-exterior", "The back of our white Toyota HiAce Commuter van, with a wheelchair access sign on the rear window", "(min-width: 900px) 17vw, 30vw")}<figcaption>Our van</figcaption></figure>
+            <figure class="veil">{img("van-side", "Inside our van through the side door: grab rails, a non-slip step and rows of seats", "(min-width: 900px) 17vw, 30vw")}<figcaption>Side entry</figcaption></figure>
+            <figure class="veil">{img("van-lift", "The rear doors of our van open to show the wheelchair lift", "(min-width: 900px) 17vw, 30vw")}<figcaption>Wheelchair lift</figcaption></figure>
+          </div>
+        </div>
         <div class="reveal">
-          <h2 id="map-title">Find us in Auburn</h2>
-          <p>Our office is at {STREET}, {SUBURB} {STATE} {POSTCODE}. We support participants across Sydney, at home and in the community, and our wheelchair-accessible van helps people get where they need to go.</p>
-          <p><a class="text-link" href="{MAP_LINK}" target="_blank" rel="noopener"><span>Open in Google Maps{NEWTAB}</span>{icon("arrow")}</a></p>
+          <h2 id="area-title">Across Sydney, at home and in the community</h2>
+          <p>We're based in {SUBURB} and come to you, wherever you are in Sydney. Our own wheelchair-accessible van, with a rear wheelchair lift, helps people get where they need to go.</p>
           <div class="cta-row">
             <a class="btn btn--primary" href="#quote-form">Request a quote {ARROW}</a>
             {or_call()}
           </div>
-        </div>
-        <div class="map-frame">
-          <iframe src="{MAP_EMBED}" title="Map showing {STREET}, {SUBURB} {STATE} {POSTCODE}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>

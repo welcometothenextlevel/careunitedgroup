@@ -118,7 +118,7 @@ IMAGES = {
     "van-exterior": ([260], (1, 1)), "van-side": ([260], (1, 1)), "van-lift": ([260], (1, 1)),
     "ndis-people": ([600, 920], (1, 1)), "greeting": ([700, 1200], (3, 2)), "paper-chain": ([700, 1200], (3, 2)),
     "nurse": ([700, 1200], (4, 3)), "park": ([700, 1200], (4, 3)),
-    "hero": ([640, 1100], (4, 5)), "health": ([700, 1200], (4, 3)), "daily-living": ([700, 1200], (4, 3)),
+    "hero-logo": ([640, 1100], (4, 5)), "health": ([700, 1200], (4, 3)), "daily-living": ([700, 1200], (4, 3)),
     "friends": ([600, 1000], (4, 5)), "bench": ([600, 1000], (4, 5)), "dandelion": ([700, 1200], (3, 2)),
     "boardwalk": ([600, 1000], (4, 5)), "kitchen": ([1000, 1800], (21, 9)),
 }
@@ -151,6 +151,9 @@ def img(name, alt, sizes, eager=False):
     if name in LICENSED:
         alt = ADOBE_ALT[name]
         note = f"<!-- Licensed Adobe Stock #{LICENSED[name]} (licence held by the client). -->"
+    elif name == "hero-logo":
+        note = ("<!-- Made 24 Nov 2026 at the client's request: their logo on a board with cut-out Pexels photos "
+                "(#8524618, #6606139, #7294852, free Pexels licence). Source script: _build/hero_logo.py. -->")
     elif name == "ndis-people":
         note = ("<!-- Image supplied by the client. TODO: it shows the NDIA's NDIS logo; check the NDIA brand rules allow a provider to use it, "
                 "or swap for the NDIS Commission's registered-provider logo. -->")
@@ -579,11 +582,7 @@ def page_home():
           </ul>
         </div>
         <div class="hero-visual">
-          <div class="hero-main veil">{img("hero", "A support worker pours a glass of juice for a young man in a wheelchair at a kitchen table", "(min-width: 900px) 40vw, 80vw", eager=True)}</div>
-          <figure class="hero-inset float">
-            {img("van-exterior", "The back of our white Toyota HiAce Commuter van, with a wheelchair access sign on the rear window", "(min-width: 900px) 22vw, 50vw", eager=True)}
-            <figcaption>{icon("wheelchair")}Our wheelchair-accessible van</figcaption>
-          </figure>
+          <div class="hero-main veil">{img("hero-logo", "The Care United Group logo on a board, with three smiling people in front: a young woman in a wheelchair, an older man with a white cane and a man in a wheelchair", "(min-width: 900px) 40vw, 80vw", eager=True)}</div>
           <p class="hero-tag"><strong>13 supports</strong>approved on the NDIS Commission register</p>
         </div>
       </div>

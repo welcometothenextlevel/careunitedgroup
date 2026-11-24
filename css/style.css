@@ -305,9 +305,9 @@ a:hover { color: var(--pink-text); }
 .hero-facts .ico svg { width: 22px; height: 22px; }
 .hero-facts small { display: block; font-weight: 400; color: var(--muted); font-size: 1rem; }
 
-.hero-visual { position: relative; padding: 0 0 70px 0; }
+.hero-visual { position: relative; }
 .hero-main { border-radius: var(--r-lg); overflow: hidden; margin-left: 14%; box-shadow: var(--shadow); }
-.hero-main img { width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover; object-position: 55% 40%; }
+.hero-main img { width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover; object-position: 50% 40%; }
 .hero-inset {
   position: absolute; left: 0; bottom: 0; width: 56%; margin: 0;
   border-radius: var(--r); overflow: hidden; border: 6px solid var(--ivory);

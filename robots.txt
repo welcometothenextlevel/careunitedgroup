@@ -1,7 +1,4 @@
-# TODO: this is a preview/pitch copy, so search engines are asked not to crawl it.
-# When the site moves to the client's own domain, replace the two lines below with:
-#   User-agent: *
-#   Allow: /
-#   Sitemap: https://www.cugndis.com/sitemap.xml   (TODO: confirm the final domain)
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://www.cugndis.com.au/sitemap.xml

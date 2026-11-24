@@ -4,12 +4,12 @@ Search the HTML for `TODO` to find each spot. Rebuild with `python3 _build/build
 
 ## Must do before launch
 1. **Formspree ID**: replace `YOUR_FORM_ID` (`FORM_ACTION` in `_build/build.py`). Create the form at formspree.io with cug.ndis@gmail.com as the recipient. Until then both quote forms show the thank-you message but send nothing.
-2. **Remove noindex**: delete the `<meta name="robots" content="noindex, nofollow">` line (in `head()`), and switch `robots.txt` to `Allow: /` plus the Sitemap line.
-3. **Final domain**: they own both www.cugndis.com and cugndis.com.au (both currently serve the Webador site). Pick one, then:
-   - add `<link rel="canonical">` and `og:url` (absolute) to `head()`
-   - make `og:image` absolute: `https://DOMAIN/images/og-image.jpg`
-   - add `"url"` and `"image"` to the LocalBusiness JSON-LD (`schema()`)
-   - check the domain in `sitemap.xml`, then submit it in Google Search Console
+2. **Done 24 Nov 2026: noindex removed**, robots.txt allows crawling and lists the sitemap.
+3. **Done 24 Nov 2026: live on https://www.cugndis.com.au/** (GoDaddy DNS: 4 A records to GitHub Pages, www CNAME to welcometothenextlevel.github.io; the bare domain redirects to www). Canonical, og:url, absolute og:image and schema url/image/logo use `SITE` in build.py. Still to do:
+   - tick **Enforce HTTPS** in GitHub Pages settings once the certificate is issued
+   - submit `sitemap.xml` in Google Search Console
+   - www.cugndis.com (the .com) still serves the old Webador site: point it at the new site or let it lapse
+   - the GoDaddy Website Builder plan is no longer used by the domain; the client can cancel it
 4. **Business name**: the brief and their current homepage say "Unitrd"; the ABN register and the NDIS Commission register both say CARE UNITED GROUP PTY LTD, so the site uses "United". Confirm with the client.
 5. **NDIS registration renewal**: the Commission register says registration is in force until **19 December 2026**. The site says "registered" and links to the live register entry. Check renewal with the client. The public entry shows no registration number; add one to the About page if they want it shown.
 6. **NDIS register website field**: their register entry lists `www.careuntited.com.au` (misspelt, and the domain doesn't resolve). The client should update it to their real domain via the NDIS Commission portal.

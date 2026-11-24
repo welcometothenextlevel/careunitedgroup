@@ -23,6 +23,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 # ------------------------------------------------------------------ facts
 BUSINESS = "Care United Group"
 LEGAL = "Care United Group Pty Ltd"
+SITE = "https://www.cugndis.com.au/"  # live domain since 24 Nov 2026
 ABN = "44 650 599 787"
 SUBURB = "Auburn"
 STATE = "NSW"
@@ -194,12 +195,19 @@ def schema():
         "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": s[2]}} for s in SERVICES]
                       + [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": TRANSPORT_LABEL}}],
     }
-    return ('<!-- TODO: once the final domain is live, add "url" and "image" (absolute URLs) to this schema. -->\n'
-            '  <script type="application/ld+json">\n' + json.dumps(data, indent=2) + "\n  </script>")
+    data["url"] = SITE
+    data["image"] = SITE + "images/og-image.jpg"
+    data["logo"] = SITE + "images/logo-badge-320.webp"
+    return ('  <script type="application/ld+json">\n' + json.dumps(data, indent=2) + "\n  </script>")
 
 
 # ------------------------------------------------------------------ shell
-def head(title, desc, extra=""):
+def head(title, desc, extra="", path=None):
+    """path: the page's URL path on SITE (\"\" for home). None = not indexable (404)."""
+    if path is None:
+        meta = '<meta name="robots" content="noindex">'
+    else:
+        meta = f'<link rel="canonical" href="{SITE}{path}">\n  <meta property="og:url" content="{SITE}{path}">'
     return f"""<!DOCTYPE html>
 <html lang="en-AU">
 <head>
@@ -207,17 +215,14 @@ def head(title, desc, extra=""):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {extra}<title>{title}</title>
   <meta name="description" content="{desc}">
-  <!-- TODO: this is a preview/pitch copy. Remove the noindex line below (and the Disallow in robots.txt) when the site moves to the client's own domain. -->
-  <meta name="robots" content="noindex, nofollow">
-  <!-- TODO: add <link rel="canonical"> and og:url with the final absolute URL once the domain is confirmed. -->
+  {meta}
   <meta name="theme-color" content="#5a17a8">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{LEGAL}">
   <meta property="og:locale" content="en_AU">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <!-- TODO: social networks need an absolute og:image URL. Change to https://YOUR-DOMAIN/images/og-image.jpg once the domain is final. -->
-  <meta property="og:image" content="images/og-image.jpg">
+  <meta property="og:image" content="{SITE}images/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="A support worker pouring a drink for a young man in a wheelchair at a kitchen table">
@@ -769,7 +774,7 @@ def page_home():
   </main>
 """
     return (head("Registered NDIS Provider Sydney | Care United Group, Auburn",
-                 "Registered NDIS provider in Auburn supporting people across Sydney: health assistance, home care, daily personal activities, community participation and a wheelchair-accessible van.")
+                 "Registered NDIS provider in Auburn supporting people across Sydney: health assistance, home care, daily personal activities, community participation and a wheelchair-accessible van.", path="")
             + header("index.html") + body + footer())
 
 
@@ -919,7 +924,7 @@ def page_services():
   </main>
 """
     return (head("NDIS Home Care & Disability Support Services Sydney | Care United Group",
-                 "Health assistance, home care, daily personal activities, community participation and wheelchair-accessible transport from a registered NDIS provider in Auburn, Sydney.")
+                 "Health assistance, home care, daily personal activities, community participation and wheelchair-accessible transport from a registered NDIS provider in Auburn, Sydney.", path="services.html")
             + header("services.html") + body + footer())
 
 
@@ -1031,7 +1036,7 @@ def page_about():
   </main>
 """
     return (head("About Care United Group | Registered NDIS Provider in Auburn, Sydney",
-                 "Care United Group is a registered NDIS provider in Auburn, NSW. We assess each person's needs, build a tailored support plan and adapt it as needs change.")
+                 "Care United Group is a registered NDIS provider in Auburn, NSW. We assess each person's needs, build a tailored support plan and adapt it as needs change.", path="about.html")
             + header("about.html") + body + footer())
 
 
@@ -1093,7 +1098,7 @@ def page_contact():
   </main>
 """
     return (head("Request a Quote | NDIS Home Care Auburn & Sydney | Care United Group",
-                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0440 127 111, message us on WhatsApp or send a quote request online.")
+                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0440 127 111, message us on WhatsApp or send a quote request online.", path="contact.html")
             + header("contact.html") + body + footer())
 
 

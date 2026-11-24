@@ -15,7 +15,7 @@ Sources for the facts below:
   13 registration groups), checked 19 November 2026
 - the user (they have a wheelchair-accessible van)
 """
-import json
+import json, re
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -923,7 +923,7 @@ def page_services():
   </main>
 """
     return (head("NDIS Home Care & Disability Support Services Sydney | Care United Group",
-                 "Health assistance, home care, daily personal activities, community participation and wheelchair-accessible transport from a registered NDIS provider in Auburn, Sydney.", path="services.html")
+                 "Health assistance, home care, daily personal activities, community participation and wheelchair-accessible transport from a registered NDIS provider in Auburn, Sydney.", path="services")
             + header("services.html") + body + footer())
 
 
@@ -1035,7 +1035,7 @@ def page_about():
   </main>
 """
     return (head("About Care United Group | Registered NDIS Provider in Auburn, Sydney",
-                 "Care United Group is a registered NDIS provider in Auburn, NSW. We assess each person's needs, build a tailored support plan and adapt it as needs change.", path="about.html")
+                 "Care United Group is a registered NDIS provider in Auburn, NSW. We assess each person's needs, build a tailored support plan and adapt it as needs change.", path="about")
             + header("about.html") + body + footer())
 
 
@@ -1097,7 +1097,7 @@ def page_contact():
   </main>
 """
     return (head("Request a Quote | NDIS Home Care Auburn & Sydney | Care United Group",
-                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0440 127 111, message us on WhatsApp or send a quote request online.", path="contact.html")
+                 "Contact Care United Group, a registered NDIS provider in Auburn. Call 0440 127 111, message us on WhatsApp or send a quote request online.", path="contact")
             + header("contact.html") + body + footer())
 
 
@@ -1138,7 +1138,13 @@ def page_404():
 PAGES = {"index.html": page_home, "services.html": page_services, "about.html": page_about,
          "contact.html": page_contact, "404.html": page_404}
 
+def clean_urls(html):
+    """GitHub Pages serves /services for services.html, so links drop the extension (24 Nov 2026)."""
+    html = html.replace('href="index.html"', 'href="./"')
+    return re.sub(r'href="(services|about|contact)\.html', r'href="\1', html)
+
+
 if __name__ == "__main__":
     for name, fn in PAGES.items():
-        (ROOT / name).write_text(fn(), encoding="utf-8")
+        (ROOT / name).write_text(clean_urls(fn()), encoding="utf-8")
         print("wrote", name)
